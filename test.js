@@ -1,22 +1,31 @@
-// const http = require("http");
-// const route = require("./routes");
-// console.log(route.someText);
+const bodyParser = require("body-parser");
 const express = require("express");
 
 const app = express();
 
-app.use((req, res, next) => {
-  console.log("in the middleware");
-  next(); //Allow the request to continue or travel to the next middleware in line (it will be called when we don't send the respond)
+app.use(bodyParser.urlencoded({ extended: false }));
+// app.use("/", (req, res, next) => {
+//   console.log("this is always runs");
+//   next();
+// });
+
+app.use("/add-product", (req, res, next) => {
+  // console.log("in another middle ware");
+  res.send(
+    '<form action="/product" method="POST"><input type= "text" name="title"><input type="number" name="size"><button type="submit">Add Product</button></form>'
+  );
+  // res.send("<h1>Welcome to Add Product Page</h1>");
 });
 
-app.use((req, res, next) => {
-  console.log("in another middleware");
-  res.send("<h1>Welcome to the express js</h1>");
-  //   res.send({ name: "vikas" });
+app.post("/product", (req, res, next) => {
+  console.log(req.body);
+  console.log(req.body);
+  res.redirect("/");
+});
+
+app.use("/", (req, res, next) => {
+  console.log("in the middleware");
+  res.send("<h1>Welcome Express js Page</h1>");
 });
 
 app.listen(3000);
-// const server = http.createServer(app);
-//
-// server.listen(3000);
